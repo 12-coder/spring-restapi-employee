@@ -13,7 +13,7 @@
 	<artifactId>springrest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springrest1</name>
-	<description>demo project1</description>
+	<description>demo project2</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
