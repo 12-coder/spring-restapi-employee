@@ -4,22 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class Student {
+@Table(name="employee")
+public class Employee {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	 private int id;
 	 private String name;
-	 private double marks;
-	 public Student() {
-		 
-	 }
-	 public Student(int id,String name,double marks) {
-		 this.id=id;
-		 this.name=name;
-		 this.marks=marks;
-	 }
+	 private Double salary;
+	 private String designation;
+
 	public int getId() {
 		return id;
 	}
@@ -32,11 +28,20 @@ public class Student {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getMarks() {
-		return marks;
+	
+	public double getSalary() {
+		return salary;
 	}
-	public void setMarks(double marks) {
-		this.marks = marks;
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	
+	 
 
 }
