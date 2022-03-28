@@ -3,6 +3,7 @@ package com.springrest.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,10 +36,26 @@ public class EmployeeController {
 		return service.getAllEmployees();
 
 	}
+	
+	@GetMapping("/fetchById")
+	public Employee findEmployee(@PathVariable int id) {
+		return service.findById(id);
+	}
+	
+	@GetMapping("/sortBySalary")
+	public List<Employee> sort(){
+		return service.sortEmployees();
+	}
+	@DeleteMapping("/delete/{id}")
+	public List<Employee> deleteEmployees(@PathVariable int id) {
+		return service.deleteEmployees(id);
 
-	@PutMapping("/update/{salary}")
-	public Employee updateEmployee(@RequestBody Employee employee, @PathVariable Double salary) {
-		return service.updateEmployee(employee, salary);
+	}
+
+	@PutMapping("/update/{id}/{salary}")
+	public Employee updateEmployee(@RequestBody Employee employee,@PathVariable int id, @PathVariable Double salary) {
+		return service.updateEmployee(employee,id, salary);
 	}
 
 }
+
