@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,13 @@ import com.springrest.Repository.EmployeeRepository;
 import com.springrest.entity.Employee;
 import com.springrest.exception.EmployeeAlreadyExistsException;
 import com.springrest.util.ComparatorEmployeeSalary;
-
+import com.springrest.exception.ResourceNotFoundException;
 @Service
 public class EmployeeService {
 	@Autowired
 	private EmployeeRepository repo;
+	
+	
 
 	public Employee saveEmployee(Employee e) throws EmployeeAlreadyExistsException {
 		List<Employee> l = (List<Employee>) repo.findAll();
@@ -29,30 +33,46 @@ public class EmployeeService {
 		return repo.save(e);
 	}
 
-	public List<Employee> getAllEmployees() {
+	public List<Employee> sortEmployees() {
 		List<Employee> l = (List<Employee>) repo.findAll();
 
 		Collections.sort(l, new ComparatorEmployeeSalary());
 		return l;
 
 	}
-
-	public Employee updateEmployee(Employee d, Double salary) {
+	public List<Employee> getAllEmployees() {
 		List<Employee> l = (List<Employee>) repo.findAll();
-		Integer id = 0;
-		for (Employee s : l) {
-			if (s.getSalary() == salary) {
-				id = s.getId();
-			}
+		return l;
 		}
 
-		Optional<Employee> employeeDb = this.repo.findById(id);
+	public Employee updateEmployee(Employee d,int id, Double salary) {
+		Employee employeeDb = repo.findById(id).
+				orElseThrow(() ->   new ResourceNotFoundException("EmployeeId " + id + "not found"));
 
-		Employee employeeUpdate = employeeDb.get();
-		employeeUpdate.setSalary(d.getSalary());
+		 
+		employeeDb.setSalary(d.getSalary());
 		repo.save(d);
-		return employeeUpdate;
+		return d;
 
+	}
+		
+		
+
+		
+		
+
+	public List<Employee> deleteEmployees(int id) {
+		repo.deleteById(id);
+		List<Employee> l = (List<Employee>) repo.findAll();
+
+		return l;
+	}
+
+	public Employee findById(int id) {
+		Employee e=  repo.findById(id)
+		        .orElseThrow(() ->   new ResourceNotFoundException("EmployeeId " + id + "not found"));
+		return e;
 	}
 
 }
+
